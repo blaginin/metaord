@@ -1,0 +1,14 @@
+{% extends 'metaord/fragments/orders_list.html' %}
+
+{% block id %}
+<span class="p5p">{{ order.pk }}</span>
+<span class="dropdown">
+    <span class="btn btn-default btn-xs dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="glyphicon glyphicon-option-horizontal"></span>
+    </span>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><a href="{% url 'chief:order_upd' project_pk=order.project.pk order_pk=order.pk %}">Редактировать</a></li>
+        <li><a href="{% url 'chief:order_del' pk=order.pk %}">Удалить</a></li>
+    </ul>
+</span>
+{% endblock id %}

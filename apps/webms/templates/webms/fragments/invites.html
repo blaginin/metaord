@@ -1,0 +1,13 @@
+{% extends 'chief/fragments/webms_invites/invites.html' %}
+
+{% block id %}
+<span>{{ invite.pk }}</span>
+<span class="dropdown">
+    <span class="btn btn-default btn-xs dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <i class="glyphicon glyphicon-option-horizontal"></i>
+    </span>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><a href="{% url 'webms:invite_upd_status' pk=invite.pk %}">Изменить статус</a></li>
+    </ul>
+</span>
+{% endblock id %}

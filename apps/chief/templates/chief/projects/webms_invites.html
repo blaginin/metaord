@@ -1,0 +1,7 @@
+{% extends 'metaord/layouts/basic.html' %}
+
+{% block content %}
+    <h3>Приглашения web-мастеров</h3>
+    <div class="mb1"><a href="{% url 'chief:invite_create' %}"><button type="button" class="btn btn-primary btn-sm">Новое приглашение</button></a></div>
+    {% include "chief/fragments/webms_invites/invites.html" with object_list=webms_invites %}
+{% endblock content %}

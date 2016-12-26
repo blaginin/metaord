@@ -1,0 +1,6 @@
+{% extends 'metaord/layouts/basic.html' %}
+
+{% block content %}
+    <h4><a href="{% url 'worker:orders' %}">Back to orders list</a></h4>
+    {% include "metaord/fragments/order.html" with order=object app_name="worker" edit_view_name="order_upd_status" %}
+{% endblock content %}

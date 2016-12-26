@@ -1,0 +1,35 @@
+
+<!-- TODO: Pass statuses in view (inherit in webms mb) -->
+{% include "metaord/fragments/statuses_tags.html" with statuses=webms_invite_statuses arg_name="webms_invite_status" %}
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Проект</th>
+        <th>Web-мастер</th>
+        <th>Статус</th>
+        <th>Заказов от приглашения</th>
+        <th>API токен</th>
+    </tr>
+    {% for invite in object_list %}
+        <tr>
+            <td>
+                {% block id %}
+                <span>{{ invite.pk }}</span>
+                <span class="dropdown">
+                    <span class="btn btn-default btn-xs dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="glyphicon glyphicon-option-horizontal"></i>
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="{% url 'chief:invite_del' pk=invite.pk %}">Удалить</a></li>
+                    </ul>
+                </span>
+                {% endblock id %}
+            </td>
+            <td>{{ invite.project }}</td>
+            <td>{{ invite.webms }}</td>
+            <td>{{ invite.get_status_display }}</td>
+            <td>{{ invite.orders_amt }}</td>
+            <td><code>{{ invite.api_token }}</code></td>
+        </tr>
+    {% endfor %}
+</table>

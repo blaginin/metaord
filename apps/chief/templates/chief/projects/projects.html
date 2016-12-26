@@ -1,0 +1,41 @@
+{% extends 'metaord/layouts/basic.html' %}
+
+{% block content %}
+    <h2>Список проектов</h2>
+    <div class="mb1"><a href="{% url 'chief:project_create' %}"><button type="button" class="btn btn-primary btn-sm">Создать проект</button></a></div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+        </tr>
+        {% for project in object_list %}
+            <tr>
+                <td>
+                    <a class="p5p" href="{% url 'chief:project' pk=project.pk %}">{{ project.pk }}</a>
+                    <span class="dropdown">
+                        <span class="btn btn-default btn-xs dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="glyphicon glyphicon-option-horizontal"></i>
+                        </span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="{% url 'chief:project_upd' pk=project.pk %}">Редактировать</a></li>
+                            <li><a href="{% url 'chief:project_del' pk=project.pk %}">Удалить</a></li>
+                        </ul>
+                    </span>
+                </td>
+                <td>{{ project.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h2>Методы API:</h2>
+    <h3>Список методов</h3>
+    <ul>
+        <li><b>/api/order/create</b> - создания заказа. Формат сообщения (FIELD_NAME, VALUE - имя и значение дополнительного поля, API_TOKEN - токен приглашения для web-мастера):
+        <pre><code>{
+    "api_token": API_TOKEN,
+    "order": {
+        "FIELD_NAME": VALUE
+    }
+}</pre></code>
+        </li>
+    </ul>
+{% endblock content %}

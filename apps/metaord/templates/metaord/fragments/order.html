@@ -1,0 +1,11 @@
+{% load urls_utils %}
+
+<div>
+    <p><b>ID:</b> {{ order.pk }}</p>
+    {% comment %}<p><b>Author:</b> {{ order.author }}</p>{% endcomment %}
+    <p><b>Posted on:</b> {{ order.post_date }}</p>
+    <p><b>Status:</b> {{ order.status }}</p>
+    {% comment %}<p><b>Text:</b></p>
+    <p>{{ order.text|linebreaksbr }}</p>{% endcomment %}
+    <p><a href="{% namespaced_url app_name edit_view_name pk=order.pk %}">Редактировать</a></p>
+</div>

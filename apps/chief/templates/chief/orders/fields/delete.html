@@ -1,0 +1,16 @@
+{% extends 'metaord/layouts/basic.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <h3 class="mb2">Удаление поля заказа</h3>
+    <form method="POST" action="{% url 'chief:ord_field_del' pk=object.pk %}" class="form-horizontal">
+        {% csrf_token %}
+        <p>Вы действительно хотите удалить поле заказа "<b>{{ object }}</b>"?</p>
+        <p>Вся информация хранящаяся в этом поле будет уничтожена.</p>
+        {% buttons %}
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary">Удалить</button>
+        </div>
+        {% endbuttons %}
+    </form>
+{% endblock content %}

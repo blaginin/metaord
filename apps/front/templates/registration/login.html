@@ -1,0 +1,23 @@
+{% extends 'metaord/layouts/basic.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h3 class="mb2">Вход</h3>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" action="{% url 'login' %}" class="form-horizontal">
+            {% csrf_token %}
+            {% bootstrap_form form layout='horizontal' %}
+            {% buttons %}
+                <div class="col-sm-offset-3 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </div>
+            {% endbuttons %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+    <div class="col-md-6"></div>
+</div>
+
+{% endblock %}

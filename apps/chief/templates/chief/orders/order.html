@@ -1,0 +1,6 @@
+{% extends 'metaord/layouts/basic.html' %}
+
+{% block content %}
+    {% url 'chief:orders' as list_url %}
+    {% include "metaord/fragments/order.html" with order=object list_url=list_url udp_status_pref='/chief/orders/update' %}
+{% endblock content %}

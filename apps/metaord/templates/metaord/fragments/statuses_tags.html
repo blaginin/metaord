@@ -1,0 +1,9 @@
+{% if statuses %}
+    <h4>
+        <span>Статусы:</span>
+        <a href="./" class="label label-info">Все</a>
+        {% for status in statuses %}
+            <a href="?{{ arg_name }}={{ status.0 }}" class="label {{ status.2 }}">{{ status.1 }}</a>
+        {% endfor %}
+    </h4>
+{% endif %}

@@ -1,0 +1,53 @@
+{% extends 'metaord/layouts/basic.html' %}
+{% load bootstrap3 %}
+{% load urls_utils %}
+
+{% block content %}
+<h3>Список дополнительных полей к заказу</h3>
+<div class="mb1"><a href="{% url 'chief:ord_field_create' project_pk=project_pk %}">
+    <button type="button" class="btn btn-primary btn-sm">Создать поле</button></a>
+</div>
+<div class="row col-md-12">
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Проект</th>
+            <th>Влючено</th>
+            <th>Имя</th>
+            <th>Тип</th>
+            <th>Обязательное</th>
+            <th>Шаблон</th>
+            <th>Сообщение об ошибке</th>
+            <th>Может ли редактировать оператор</th>
+            <th>Может ли просматривать web-мастер</th>
+        </tr>
+        {% for field in object_list %}
+            <tr>
+                <td>
+                    {% block id %}
+                    <span class="p5p">{{ field.pk }}</span>
+                    <span class="dropdown">
+                        <span class="btn btn-default btn-xs dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="glyphicon glyphicon-option-horizontal"></span>
+                        </span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="{% url 'chief:ord_field_upd' pk=field.pk %}">Редактировать</a></li>
+                            <li><a href="{% url 'chief:ord_field_del' pk=field.pk %}">Удалить</a></li>
+                        </ul>
+                    </span>
+                    {% endblock id %}
+                </td>
+                <td>{{ field.project }}</td>
+                <td>{{ field.is_on }}</td>
+                <td>{{ field.name }}</td>
+                <td>{{ field.get_vtype_display }}</td>
+                <td>{{ field.is_required }}</td>
+                <td>{{ field.pattern }}</td>
+                <td>{{ field.error_msg }}</td>
+                <td>{{ field.can_worker_edit }}</td>
+                <td>{{ field.can_webms_view }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

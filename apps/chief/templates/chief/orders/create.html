@@ -1,0 +1,11 @@
+{% extends 'metaord/layouts/basic.html' %}
+
+{% block content %}
+
+    <h3 class="mb2">Создание нового заказа</h3>
+    <!-- TODO: hints on how to use template tags in post back messages -->
+    {% url 'chief:order_create' project_pk=project.pk as create_url %}
+    {% comment %} TODO: Del create_url {% endcomment %}
+    {% include "metaord/fragments/order_create_or_upd.html" with form=form is_new="new" create_url=create_url %}
+
+{% endblock content %}

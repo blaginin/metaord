@@ -1,0 +1,7 @@
+{% extends 'metaord/layouts/basic.html' %}
+
+{% block content %}
+    <h3>Заказы</h3>
+    {% comment %}TODO: inherit and extend base fragment{% endcomment %}
+    {% include "metaord/fragments/orders_list.html" with orders=object_list app_name="worker" edit_view_name="order_upd_status" %}
+{% endblock content %}

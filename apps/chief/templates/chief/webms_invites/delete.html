@@ -1,0 +1,16 @@
+{% extends 'metaord/layouts/basic.html' %}
+{% load urls_utils %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <h3 class="mb2">Удаление приглашения</h3>
+    <form method="POST" action="{% url 'chief:invite_del' pk=object.pk %}" class="form-horizontal">
+        {% csrf_token %}
+        <p>Вы действительно хотите удалить приглашение "<b>{{ object }}</b>"?</p>
+        {% buttons %}
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary">Удалить</button>
+        </div>
+        {% endbuttons %}
+    </form>
+{% endblock content %}

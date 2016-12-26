@@ -1,0 +1,49 @@
+{% load urls_utils %}
+{% load html_filters %}
+
+
+
+<div class="row col-md-12">
+    {% include "metaord/fragments/statuses_tags.html" with statuses=order_statuses arg_name="order_status" %}
+</div>
+<div class="row col-md-12">
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Дата создания</th>
+            <th>Статус</th>
+            {% for name, pk in extra_fields.items %}
+                <th>{{ name }}</th>
+            {% endfor %}
+        </tr>
+        {% for order in orders %}
+            <tr>
+                <td>
+                    {% block id %}
+                    <span class="p5p">{{ order.pk }}</span>
+                    <span class="dropdown">
+                        <span class="btn btn-default btn-xs dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="glyphicon glyphicon-option-horizontal"></span>
+                        </span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <!-- todo: permission-based editing -->
+                            {% if edit_view_name %}
+                                <!-- TODO: Make it with fragments inheritance -->
+                                <li><a href="{% namespaced_url app_name edit_view_name pk=order.pk %}">{{ edit_msg|default:"Редактировать" }}</a></li>
+                            {% endif %}
+                            {% if delete_view_name %}
+                                <li><a href="{% namespaced_url app_name delete_view_name pk=order.pk %}">Удалить</a></li>
+                            {% endif %}
+                        </ul>
+                    </span>
+                    {% endblock id %}
+                </td>
+                <td>{{ order.post_date }}</td>
+                <td>{{ order.get_status_display }}</td>
+                {% for name, pk in extra_fields.items %}
+                    <td>{{ order.fields|lookup:pk }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>

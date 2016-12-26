@@ -1,0 +1,67 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load html_filters %}
+<html>
+<head>
+    <title>{% block title %}Metaorder CRM{% endblock %}</title>
+    <meta content="text/html" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="{% static 'css/metaord.css' %}" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-sliderAccess.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.4.5/i18n/jquery-ui-timepicker-ru.js"></script>
+    <script src="{% static 'js/datepicker-ru.js' %}"></script>
+
+    {% block extra_head %}
+    {% endblock %}
+</head>
+<body>
+{% block header %}
+    {% if user|has_group:"chief" %}
+        {% include "chief/fragments/navbar.html" %}
+    {% elif user|has_group:"worker" %}
+        {% include "worker/fragments/navbar.html" %}
+    {% elif user|has_group:"webms" %}
+        {% include "webms/fragments/navbar.html" %}
+    {% else %}
+        {% include "front/fragments/navbar.html" %}
+    {% endif %}
+{% endblock %}
+
+<div class="container-fluid mb8">
+    <div class="row">
+        <div class="col-md-12 django-msg">
+            <!-- todo: mb absolute popup block -->
+            {% bootstrap_messages %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 content">
+            {% block content %}
+                <h2>Welcome to Metaorder!</h2>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% block footer %}
+<footer class="footer">
+    <div class="container-fluid">
+        <h3>Metaorder CRM {% now "Y" %}</h3>
+    </div>
+</footer>
+{% endblock %}
+
+<script src="{% static 'js/metaord.js' %}"></script>
+{% block extra_scripts %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'metaord/layouts/basic.html' %}
+{% load urls_utils %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <h3 class="mb2">Создание нового проекта</h3>
+    <p>Post-back сообщения указываются в формате JSON с возможностью вставки следующих специальных значений:</p>
+    {% verbatim %}
+    <ul>
+        <li>Статус заказа: <code>{{ order.status }}</code></li>
+        <li>Дата создания заказа: <code>{{ order.post_date }}</code></li>
+        <li>Дополнительные поля заказа: <code>{{ order.fields|lookup:23 }}</code>, где 23 - это ID поля из списка доп полей проекта</li>
+    </ul>
+    <p>Например:</p>
+    <code><pre>
+{
+    "firstName": {{ order.fields|lookup:23 }},
+    "lastName": {{ order.fields|lookup:24 }},
+    "address": {
+        "streetAddress": {{ order.fields|lookup:25 }}
+    },
+    "phoneNumbers": [
+        {{ order.fields|lookup:26 }}
+    ]
+}
+    </pre></code>
+    {% endverbatim %}
+    <form method="POST" action="{% url 'chief:project_create' %}" class="form-horizontal">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+        {% buttons %}
+            <div class="col-sm-offset-3 col-sm-10">
+                <button type="submit" class="btn btn-primary">Создать</button>
+            </div>
+        {% endbuttons %}
+    </form>
+{% endblock content %}

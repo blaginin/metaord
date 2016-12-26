@@ -1,0 +1,58 @@
+{% extends 'metaord/layouts/basic.html' %}
+
+{% block content %}
+    <h2 class="mb2">
+        <span><b>{{ project.name }}</b></span>
+        <span class="dropdown">
+            <span class="btn btn-default btn-sm dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="glyphicon glyphicon-option-horizontal"></span>
+            </span>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="{% url 'chief:project_upd' pk=project.pk %}">Редактировать</a></li>
+                <li><a href="{% url 'chief:project_del' pk=project.pk %}">Удалить</a></li>
+            </ul>
+        </span>
+    </h2>
+
+    <div class="mb1">
+        <button class="btn btn-default mb1" type="button" data-toggle="collapse" data-target="#invites" aria-expanded="false" aria-controls="invites">
+            Приглашения web-мастеров
+        </button>
+        <div class="collapse" id="invites">
+            <div>
+                <div class="mb1"><a href="{% url 'chief:invite_create' %}"><button type="button" class="btn btn-primary btn-sm">Новое приглашение</button></a></div>
+                {% include "chief/fragments/webms_invites/invites.html" with object_list=webms_invites %}
+            </div>
+        </div>
+    </div>
+    <div class="mb2">
+        <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#post-back" aria-expanded="false" aria-controls="post-back">
+            Post-back
+        </button>
+        <div class="collapse" id="post-back">
+            <div>
+                <h4>URL: <code>{{ project.pb_url }}</code></h4>
+                <h4>Создание заказа: <pre><code>{{ project.pb_order_create }}</code></pre></h4>
+                <h4>Изменение заказа: <pre><code>{{ project.pb_order_upd_status }}</code></pre></h4>
+            </div>
+        </div>
+    </div>
+
+    <h3>
+        <span>Заказы</span>
+        <span class="dropdown">
+            <span class="btn btn-default btn-xs dropdown-toggle" id="dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="glyphicon glyphicon-option-horizontal"></span>
+            </span>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="{% url 'chief:ord_field_list' project_pk=project.pk %}">Редактировать поля заказа</a></li>
+            </ul>
+        </span>
+    </h3>
+    <div class="mb1"><a href="{% url 'chief:order_create' project_pk=project.pk %}">
+        <button type="button" class="btn btn-primary btn-sm">Создать заказ</button></a>
+    </div>
+    <div class="mb2">
+    {% include "chief/fragments/orders/orders_list.html" with orders=object_list %}
+    </div>
+{% endblock content %}
