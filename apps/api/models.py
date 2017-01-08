@@ -4,22 +4,25 @@ import re
 
 class ApiOrder():
 
-    @staticmethod
-    def validate_order(order_dict, fields):
+    @classmethod
+    def validate_order(cls, order_dict, fields):
         errors = []
         fields_dict = {}
         for field in fields:
-            if field.pk not in order_dict and field.is_required:
-                errors.append("Required field `{0}` not passed.".format(field.pk))
+            if field.name not in order_dict and field.is_required:
+                errors.append(cls._no_field_error(field.name))
             else:
-                if field.pk in order_dict:
-                    field_val = order_dict[field.pk]
-                    pattern = re.compile(field.pattern)
-                    if pattern.match(str(field_val)):
-                        fields_dict[str(field.pk)] = field_val
-                    else:
-                        errors.append(field.error_msg)
+                field_val = order_dict[field.name]
+                pattern = re.compile(field.pattern)
+                if pattern.match(str(field_val)):
+                    fields_dict[str(field.pk)] = field_val
+                else:
+                    errors.append(field.error_msg)
         return (fields_dict, errors)
+
+    @staticmethod
+    def _no_field_error(fname):
+        return "Required field `{0}` not passed.".format(fname)
 
 
 

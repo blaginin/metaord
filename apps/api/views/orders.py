@@ -7,6 +7,7 @@ from api.models import ApiResponse, ErrCodes, ApiOrder
 from chief.models import WebmsInvite, Project
 from metaord.models import Order, OrderField, STATUS_CHOICES
 from metaord.utils.auth import is_valid_uuid
+from django.views.decorators.csrf import csrf_exempt
 
 
 class Scm():
@@ -15,6 +16,7 @@ class Scm():
     order = "order"
 
 
+@csrf_exempt
 def create_order(request):
     try:
         data = json.loads(request.body.decode("utf-8"))
