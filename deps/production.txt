@@ -1,8 +1,0 @@
-# Production requirements file.
-# Place requirements here that should ONLY be installed to the PRODUCTION environment.
-
-# include the base requirements file
--r _base.txt
-
-# for collectstatic
-whitenoise==3.2.2
