@@ -89,9 +89,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'metaord_db',
         'USER': 'kell18',
-        'PASSWORD': 'g29s7qkn',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'PASSWORD': 'rq3DTdr7dw',
+        'HOST': 'kell18-280.postgres.pythonanywhere-services.com',
+        'PORT': '10280',
     },
 }
 
