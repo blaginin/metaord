@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'metaord_db',
         'USER': 'kell18',
         'PASSWORD': 'rq3DTdr7dw',
-        'HOST': 'kell18-280.postgres.pythonanywhere-services.com',
+        'HOST': 'localhost',
         'PORT': '10280',
     },
 }

@@ -12,7 +12,10 @@ class ApiOrder():
             if field.name not in order_dict and field.is_required:
                 errors.append(cls._no_field_error(field.name))
             else:
-                field_val = order_dict[field.name]
+                print("OD", order_dict)
+                try: field_val = order_dict[str(field.pk)]
+                except KeyError: continue
+                 
                 pattern = re.compile(field.pattern)
                 if pattern.match(str(field_val)):
                     fields_dict[str(field.pk)] = field_val

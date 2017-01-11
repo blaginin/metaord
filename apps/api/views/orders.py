@@ -41,6 +41,7 @@ def create_order(request):
     if not fields:
         return ApiResponse.failure("No fields matching to API token.", ErrCodes.fields_not_created_err)
 
+    print('@W', fields[0].pk, fields)
     fields_dicts, form_errors = ApiOrder.validate_order(data[Scm.order], fields)
     if form_errors:
         return ApiResponse.failure_form_not_valid(form_errors)
