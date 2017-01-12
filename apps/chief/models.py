@@ -10,11 +10,16 @@ class Chief(models.Model):
     def __str__(self):
         return "{0} {1}".format(self.user.first_name, self.user.last_name)
 
+
+
 class Project(models.Model):
     name = models.CharField(max_length=512, verbose_name="Название")
     pb_order_create = models.TextField(verbose_name="Тело post-back сообщения при создании заказа в формате JSON", blank=True)
     pb_order_upd_status = models.TextField(verbose_name="Тело post-back сообщения при обновлении статуса заказа в формате JSON", blank=True)
     pb_url = models.URLField(verbose_name="Post-back URL", blank=True)
+    
+
+    author = models.ForeignKey(Chief, null=True) #models.OneToOneField(Chief, default=getdef )
 
     def __str__(self):
         return self.name

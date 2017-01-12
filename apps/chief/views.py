@@ -16,7 +16,7 @@ from metaord.utils.view import ExtraContext
 from metaord.utils.auth import Groups
 from metaord.utils.models import create_default_order_fields
 from metaord.utils.decorators import group_required, class_decorator
-from chief.models import WebmsInvite, Project
+from chief.models import WebmsInvite, Project, Chief
 from chief.forms import ChiefForm
 from functools import partial
 # todo: mb distribute by files
@@ -32,6 +32,9 @@ def index(request):
 class ProjectList(ListView):
     model = Project
     template_name = "chief/projects/projects.html"
+
+    def get_queryset(self):
+        return super(ProjectList, self).get_queryset().filter(author=Chief.objects.all().get(user=self.request.user))
 
 @class_decorator(group_required("chief", login_url=login_url))
 class ProjectDetails(OrderList):
@@ -53,12 +56,17 @@ class ProjectDetails(OrderList):
 class ProjectCreate(SuccessMessageMixin, CreateView):
     model = Project
     template_name = "chief/projects/create.html"
-    fields = "__all__"
+    fields = ["name", "pb_order_create", "pb_order_upd_status", "pb_url"]
     success_url = reverse_lazy("chief:projects")
     success_message = "Проект успешно создан"
 
     def form_valid(self, form):
         proj = form.save()
+
+        proj.author = Chief.objects.all().get(user=self.request.user)
+        print('PA', proj.author)
+        proj.save()
+        
         create_default_order_fields(proj)
         return HttpResponseRedirect(reverse_lazy("chief:project", kwargs={"pk": proj.pk}))
 
