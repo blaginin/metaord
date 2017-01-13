@@ -45,6 +45,11 @@ class ApiResponse():
         return JsonResponse({"is_success": True})
 
     @staticmethod
+    def success_result(result={}):
+        return JsonResponse({"is_success": True, "result":result})
+
+
+    @staticmethod
     def failure(cause, err_code=1):
         return JsonResponse({
             "is_success": False,

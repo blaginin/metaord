@@ -41,7 +41,6 @@ def create_order(request):
     if not fields:
         return ApiResponse.failure("No fields matching to API token.", ErrCodes.fields_not_created_err)
 
-    print('@W', fields[0].pk, fields)
     fields_dicts, form_errors = ApiOrder.validate_order(data[Scm.order], fields)
     if form_errors:
         return ApiResponse.failure_form_not_valid(form_errors)
@@ -49,3 +48,30 @@ def create_order(request):
     o = Order.objects.create(project=invite.project, status=1, fields=fields_dicts)
 
     return ApiResponse.success()
+
+
+@csrf_exempt
+def view_order(request):
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except ValueError as err:
+        return ApiResponse.failure("Value error: `{0}`.".format(err), ErrCodes.format_err)
+
+    if Scm.api_token not in data:
+        return ApiResponse.failure("API token not povided.", ErrCodes.arg_err)
+
+
+    if 'order_id' not in data.keys():
+        return ApiResponse.failure("order_id not povided.", ErrCodes.arg_err)
+
+    tok = data[Scm.api_token]
+    if not is_valid_uuid(tok):
+        return ApiResponse.failure("API token is incorrect.", ErrCodes.token_err)
+
+    try:
+        response = Order.objects.all().get(pk=int(data['order_id'])).fields
+    except BaseException as e:
+        print('BE', e)
+        return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
+
+    return ApiResponse.success_result(result=response)
