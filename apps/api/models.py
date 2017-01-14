@@ -1,6 +1,6 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import re
-
+import json 
 
 class ApiOrder():
 
@@ -42,11 +42,12 @@ class ErrCodes():
 class ApiResponse():
     @staticmethod
     def success():
-        return JsonResponse({"is_success": True})
+        return JsonResponse({"is_success": True}, safe=False)
 
     @staticmethod
     def success_result(result={}):
-        return JsonResponse({"is_success": True, "result":result})
+        resp = {"is_success": True, "result":result}
+        return HttpResponse(json.dumps(resp, ensure_ascii=False), content_type="application/json; encoding=utf-8")
 
 
     @staticmethod
@@ -55,7 +56,7 @@ class ApiResponse():
             "is_success": False,
             "error_code": err_code,
             "cause": cause,
-        })
+        }, safe=False)
 
     @staticmethod
     def failure_form_not_valid(form_errors, cause="Order form does't match the fromat."):
@@ -64,4 +65,4 @@ class ApiResponse():
             "error_code": ErrCodes.invalid_form_err,
             "cause": cause,
             "form_errors": form_errors,
-        })
+        }, safe=False)
