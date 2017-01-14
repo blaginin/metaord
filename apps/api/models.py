@@ -9,7 +9,7 @@ class ApiOrder():
         errors = []
         fields_dict = {}
         for field in fields:
-            if field.name not in order_dict and field.is_required:
+            if (field.pk not in order_dict or str(field.pk) not in order_dict ) and field.is_required:
                 errors.append(cls._no_field_error(field.name, field.pk))
             else:
                 print("OD", order_dict)
@@ -66,5 +66,5 @@ class ApiResponse():
             "cause": cause,
             "form_errors": form_errors,
         }
-        
+
         return HttpResponse(json.dumps(resp, ensure_ascii=False), content_type="application/json; encoding=utf-8")
