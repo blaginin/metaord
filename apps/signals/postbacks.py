@@ -6,15 +6,25 @@ import urllib
 
 
 def process_order(order):
-    order.post_date = order.post_date.timestamp()
+    data = order.__dict__.copy()
 
-    return order
+    copy = ['post_date', 'project']
+    
+    for i in copy:
+        data[i] = order.__getattribute__(i)
+
+    data['post_date'] = data['post_date'].timestamp()
+    
+    return data
 
 def order_upd_status(order):
     if order.project.pb_order_upd_status and order.project.pb_url:
-        order = process_order(order)
+        context_order = process_order(order)
         tmpl = Template(order.project.pb_order_upd_status)
-        ctx = Context({"order": order})
+
+        print("RESULT", context_order)
+        ctx = Context({"order": context_order})
+
         if settings.DEBUG: print("Postback order_upd_status msg: `{0}`".format(tmpl.render(ctx)))
         h = {"Content-type": "application/x-www-form-urlencoded"}
         p = [(k, v) for k, v in json.loads(tmpl.render(ctx)).items()]
@@ -22,9 +32,9 @@ def order_upd_status(order):
 
 def order_created(order):
     if order.project.pb_order_upd_status and order.project.pb_url:
-        order = process_order(order)
+        context_order = process_order(order)
         tmpl = Template(order.project.pb_order_create)
-        ctx = Context({"order": order})
+        ctx = Context({"order": context_order})
         if settings.DEBUG: print("Postback order_created msg: `{0}`".format(tmpl.render(ctx)))
         h = {"Content-type": "application/x-www-form-urlencoded"}
         p = [(k, v) for k, v in json.loads(tmpl.render(ctx)).items()]
