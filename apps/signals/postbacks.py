@@ -12,7 +12,7 @@ def process_order(order):
     for i in copy:
         data[i] = order.__getattribute__(i)
 
-    data['post_date'] = data['post_date'].timestamp()//1
+    data['post_date'] = int(data['post_date'].timestamp()//1)
 
     return data
 
