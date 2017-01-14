@@ -13,7 +13,7 @@ class ApiOrder():
                 # print(field.pk  in order_dict, str(field.pk)  in order_dict, )
                 errors.append(cls._no_field_error(field.name, field.pk))
             else:
-                print("OD", order_dict)
+                # print("OD", order_dict)
                 try: field_val = order_dict[str(field.pk)]
                 except KeyError: continue
                  

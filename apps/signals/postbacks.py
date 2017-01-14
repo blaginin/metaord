@@ -28,12 +28,16 @@ def order_upd_status(order):
         r = requests.post(order.project.pb_url, data=p, headers=h)
 
 def order_created(order):
-    print("OO", order)
+    print("\tOO", order)
+    print(bool(order.project.pb_order_upd_status), bool(order.project.pb_url))
+
     if order.project.pb_order_upd_status and order.project.pb_url:
+        print('\tpassed')
         context_order = process_order(order)
         tmpl = Template(order.project.pb_order_create)
         ctx = Context({"order": context_order})
         if settings.DEBUG: print("Postback order_created msg: `{0}`".format(tmpl.render(ctx)))
         h = {"Content-type": "application/x-www-form-urlencoded"}
         p = [(k, v) for k, v in json.loads(tmpl.render(ctx)).items()]
+        print('POST', order.project.pb_url)
         r = requests.post(order.project.pb_url, data =p, headers=h)

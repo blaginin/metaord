@@ -32,7 +32,7 @@ class Order(models.Model):
     post_date = models.DateTimeField(default=timezone.now)
     status = models.IntegerField(choices=STATUS_CHOICES)
     fields = JSONField(blank=True, null=True) # TODO: try rm
-
+    is_new = models.BooleanField(default=True)
     def __str__(self):
         return 'Order #{0} from project `{1}`. Fields:{2}'.format(self.pk, self.project, self.fields)
 
