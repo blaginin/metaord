@@ -45,7 +45,9 @@ def create_order(request):
     if form_errors:
         return ApiResponse.failure_form_not_valid(form_errors)
 
-    o = Order.objects.create(project=invite.project, status=1, fields=fields_dicts)
+    o = Order(project=invite.project, status=1, fields=fields_dicts)
+    o.save()
+    # print('OOOO&&&&&&&', o.id, o.pk)
 
     return ApiResponse.success()
 
@@ -71,7 +73,6 @@ def view_order(request):
     try:
         response = Order.objects.all().get(pk=int(data['order_id'])).fields
     except BaseException as e:
-        print('BE', e)
         return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
 
     return ApiResponse.success_result(result=response)

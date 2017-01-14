@@ -7,7 +7,7 @@ import urllib
 def process_order(order):
     data = order.__dict__.copy()
 
-    copy = ['post_date', 'project', 'id']
+    copy = ['post_date', 'project', 'pk']
     
     for i in copy:
         data[i] = order.__getattribute__(i)
@@ -28,6 +28,7 @@ def order_upd_status(order):
         r = requests.post(order.project.pb_url, data=p, headers=h)
 
 def order_created(order):
+    print("OO", order)
     if order.project.pb_order_upd_status and order.project.pb_url:
         context_order = process_order(order)
         tmpl = Template(order.project.pb_order_create)

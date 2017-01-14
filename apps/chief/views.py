@@ -64,7 +64,7 @@ class ProjectCreate(SuccessMessageMixin, CreateView):
         proj = form.save()
 
         proj.author = Chief.objects.all().get(user=self.request.user)
-        print('PA', proj.author)
+        # print('PA', proj.author)
         proj.save()
         
         create_default_order_fields(proj)
@@ -124,9 +124,15 @@ class OrderCreate(TemplateView):
                 o.project=form.cleaned_data["project"]
                 o.status=form.cleaned_data["status"]
                 o.fields=extra_fields
+                # print('******', o.pk, o.id)
                 o.save()
             else:
-                Order.objects.create(project=form.cleaned_data["project"], status=form.cleaned_data["status"], fields=extra_fields)
+                # print('(a)')
+                o = Order(project=form.cleaned_data["project"], status=form.cleaned_data["status"], fields=extra_fields)
+                # print('(b)')
+                o.save()
+                # print('^^^^ NO',o.pk, o)
+
             messages.success(request, self.success_message)
             return redirect(reverse_lazy("chief:project", kwargs={"pk": self.kwargs["project_pk"]}), request=request)
         else:
