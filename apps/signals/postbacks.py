@@ -21,4 +21,4 @@ def order_created(order):
         if settings.DEBUG: print("Postback order_created msg: `{0}`".format(tmpl.render(ctx)))
         h = {"Content-type": "application/x-www-form-urlencoded"}
         p = [(k, v) for k, v in json.loads(tmpl.render(ctx)).items()]
-        r = requests.post(order.project.pb_url, data=json.dumps(p, ensure_ascii=False), headers=h)
+        r = requests.post(order.project.pb_url, data =p, headers=h)
