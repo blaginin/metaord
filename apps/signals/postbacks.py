@@ -7,7 +7,7 @@ import urllib
 def process_order(order):
     data = order.__dict__.copy()
 
-    copy = ['post_date', 'project', 'pk']
+    copy = ['post_date', 'project', 'id']
     
     for i in copy:
         data[i] = order.__getattribute__(i)
@@ -20,8 +20,6 @@ def order_upd_status(order):
     if order.project.pb_order_upd_status and order.project.pb_url:
         context_order = process_order(order)
         tmpl = Template(order.project.pb_order_upd_status)
-
-        print("RESULT", context_order)
         ctx = Context({"order": context_order})
 
         if settings.DEBUG: print("Postback order_upd_status msg: `{0}`".format(tmpl.render(ctx)))
