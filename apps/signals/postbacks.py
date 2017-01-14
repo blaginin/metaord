@@ -4,17 +4,16 @@ import requests
 import json
 import urllib
 
-
 def process_order(order):
     data = order.__dict__.copy()
 
-    copy = ['post_date', 'project']
+    copy = ['post_date', 'project', 'pk']
     
     for i in copy:
         data[i] = order.__getattribute__(i)
 
-    data['post_date'] = data['post_date'].timestamp()
-    
+    data['post_date'] = data['post_date'].timestamp()//1
+
     return data
 
 def order_upd_status(order):
