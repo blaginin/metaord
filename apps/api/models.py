@@ -9,7 +9,8 @@ class ApiOrder():
         errors = []
         fields_dict = {}
         for field in fields:
-            if (field.pk not in order_dict or str(field.pk) not in order_dict ) and field.is_required:
+            if not (field.pk  in order_dict.keys() or str(field.pk)  in order_dict.keys() ) and field.is_required:
+                # print(field.pk  in order_dict, str(field.pk)  in order_dict, )
                 errors.append(cls._no_field_error(field.name, field.pk))
             else:
                 print("OD", order_dict)
