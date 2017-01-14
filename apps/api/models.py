@@ -10,7 +10,7 @@ class ApiOrder():
         fields_dict = {}
         for field in fields:
             if field.name not in order_dict and field.is_required:
-                errors.append(cls._no_field_error(field.name))
+                errors.append(cls._no_field_error(field.name, field.pk))
             else:
                 print("OD", order_dict)
                 try: field_val = order_dict[str(field.pk)]
@@ -24,8 +24,8 @@ class ApiOrder():
         return (fields_dict, errors)
 
     @staticmethod
-    def _no_field_error(fname):
-        return "Required field `{0}` not passed.".format(fname)
+    def _no_field_error(fname, pk):
+        return "Required field `{0}`({1}) not passed.".format(fname, pk)
 
 
 
