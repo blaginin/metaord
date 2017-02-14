@@ -45,7 +45,7 @@ def create_order(request):
     if form_errors:
         return ApiResponse.failure_form_not_valid(form_errors)
 
-    o = Order(project=invite.project, status=1, fields=fields_dicts)
+    o = Order(project=invite.project, status=0, fields=fields_dicts)
     o.save()
     # print('OOOO&&&&&&&', o.id, o.pk)
 
