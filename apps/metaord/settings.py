@@ -25,7 +25,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'kell18.pythonanywhere.com',
-    # 'localhost',
+    'localhost',
 ]
 
 # Application definition
