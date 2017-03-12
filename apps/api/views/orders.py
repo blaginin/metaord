@@ -129,14 +129,17 @@ def filter_order(request):
     if 'status' not in data.keys():
         return ApiResponse.failure("status not povided.", ErrCodes.arg_err)
 
-    invite = WebmsInvite.objects.filter(api_token=tok).first()
-    if not invite:
-        return ApiResponse.failure("No invite matching to API token.", ErrCodes.invite_err)
-
+    
 
     tok = data[Scm.api_token]
     if not is_valid_uuid(tok):
         return ApiResponse.failure("API token is incorrect.", ErrCodes.token_err)
+
+
+    invite = WebmsInvite.objects.filter(api_token=tok).first()
+    if not invite:
+        return ApiResponse.failure("No invite matching to API token.", ErrCodes.invite_err)
+
 
     ans = []
 
