@@ -135,11 +135,11 @@ def filter_order(request):
 
     ans = []
 
-    try:
-        response = Order.objects.all().filter(project=invite.project, status=int(data['status']))
-        for i in response: ans.append(i.pk)
-    except BaseException as e:
-        return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
+    # try:
+    response = Order.objects.all().filter(project=invite.project, status=int(data['status']))
+    for i in response: ans.append(i.pk)
+    # except BaseException as e:
+    #     return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
 
     return ApiResponse.success_result(result=ans)
 
