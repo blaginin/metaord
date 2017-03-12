@@ -112,3 +112,34 @@ def view_order(request):
         return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
 
     return ApiResponse.success_result(result=response)
+
+
+
+@csrf_exempt
+def filter_order(request):
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except ValueError as err:
+        return ApiResponse.failure("Value error: `{0}`.".format(err), ErrCodes.format_err)
+
+    if Scm.api_token not in data:
+        return ApiResponse.failure("API token not povided.", ErrCodes.arg_err)
+
+
+    if 'status' not in data.keys():
+        return ApiResponse.failure("status not povided.", ErrCodes.arg_err)
+
+    tok = data[Scm.api_token]
+    if not is_valid_uuid(tok):
+        return ApiResponse.failure("API token is incorrect.", ErrCodes.token_err)
+
+    ans = []
+
+    try:
+        response = Order.objects.all().filter(project=invite.project, status=int(data['status']))
+        for i in response: ans.append(i.pk)
+    except BaseException as e:
+        return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
+
+    return ApiResponse.success_result(result=ans)
+
