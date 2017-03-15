@@ -5,13 +5,14 @@ import json
 class ApiOrder():
 
     @classmethod
-    def validate_order(cls, order_dict, fields):
+    def validate_order(cls, order_dict, fields, req=True):
         errors = []
         fields_dict = {}
         for field in fields:
             if not (field.pk  in order_dict.keys() or str(field.pk)  in order_dict.keys() ) and field.is_required:
                 # print(field.pk  in order_dict, str(field.pk)  in order_dict, )
-                errors.append(cls._no_field_error(field.name, field.pk))
+                if req: errors.append(cls._no_field_error(field.name, field.pk))
+
             else:
                 # print("OD", order_dict)
                 try: field_val = order_dict[str(field.pk)]
