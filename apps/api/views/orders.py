@@ -124,6 +124,7 @@ def change_order(request):
 
 
     fields_dicts, form_errors = ApiOrder.validate_order(data[Scm.order], fields, req=False)
+    print('validate', data[Scm.order], fields, fields_dicts)
     if form_errors:
         return ApiResponse.failure_form_not_valid(form_errors)
 
