@@ -89,6 +89,47 @@ def change_order_status(request):
 
 
 @csrf_exempt
+def change_order(request):
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except ValueError as err:
+        return ApiResponse.failure("Value error: `{0}`.".format(err), ErrCodes.format_err)
+
+    if Scm.api_token not in data:
+        return ApiResponse.failure("API token not povided.", ErrCodes.arg_err)
+
+    if Scm.order_id not in data:
+        return ApiResponse.failure("order_id not povided.", ErrCodes.arg_err)
+
+    tok = data[Scm.api_token]
+    if not is_valid_uuid(tok):
+        return ApiResponse.failure("API token is incorrect.", ErrCodes.token_err)
+
+    invite = WebmsInvite.objects.filter(api_token=tok).first()
+    if not invite:
+        return ApiResponse.failure("No invite matching to API token.", ErrCodes.invite_err)
+
+    try:
+        m_order = Order.objects.filter(project=invite.project, pk=int(data['order_id'])).first()
+    except BaseException as e:
+        return ApiResponse.failure("Cant find order ({0})".format(e), ErrCodes.fields_not_created_err)
+
+    
+    fields_dicts, form_errors = ApiOrder.validate_order(data[Scm.order], fields, req=False)
+    if form_errors:
+        return ApiResponse.failure_form_not_valid(form_errors)
+
+    for i in fields_dicts.keys():
+        order.fields[i] = fields_dicts[i]
+
+    order.save()
+
+    return ApiResponse.success_result({'order_id':m_order.id})
+
+
+
+
+@csrf_exempt
 def view_order(request):
     try:
         data = json.loads(request.body.decode("utf-8"))
