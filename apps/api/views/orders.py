@@ -128,9 +128,9 @@ def change_order(request):
         return ApiResponse.failure_form_not_valid(form_errors)
 
     for i in fields_dicts.keys():
-        order.fields[i] = fields_dicts[i]
+        m_order.fields[i] = fields_dicts[i]
 
-    order.save()
+    m_order.save()
 
     return ApiResponse.success_result({'order_id':m_order.id})
 
