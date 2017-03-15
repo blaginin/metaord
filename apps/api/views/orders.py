@@ -98,7 +98,7 @@ def change_order(request):
     if Scm.api_token not in data:
         return ApiResponse.failure("API token not povided.", ErrCodes.arg_err)
 
-    if Scm.oder not in data:
+    if Scm.order not in data:
         return ApiResponse.failure("order dict not povided.", ErrCodes.arg_err)
 
     if Scm.order_id not in data:
