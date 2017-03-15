@@ -98,6 +98,9 @@ def change_order(request):
     if Scm.api_token not in data:
         return ApiResponse.failure("API token not povided.", ErrCodes.arg_err)
 
+    if Scm.oder not in data:
+        return ApiResponse.failure("order dict not povided.", ErrCodes.arg_err)
+
     if Scm.order_id not in data:
         return ApiResponse.failure("order_id not povided.", ErrCodes.arg_err)
 
@@ -114,7 +117,12 @@ def change_order(request):
     except BaseException as e:
         return ApiResponse.failure("Cant find order ({0})".format(e), ErrCodes.fields_not_created_err)
 
-    
+    fields = OrderField.objects.filter(project=invite.project)
+    if not fields:
+        return ApiResponse.failure("No fields matching to API token.", ErrCodes.fields_not_created_err)
+
+
+
     fields_dicts, form_errors = ApiOrder.validate_order(data[Scm.order], fields, req=False)
     if form_errors:
         return ApiResponse.failure_form_not_valid(form_errors)
