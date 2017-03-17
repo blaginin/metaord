@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', views.msg_logout, name='logout', kwargs={'next_page': '/'}),
-    url(r'^home/$', views.home, name='home')
+    url(r'^home/$', views.home, name='home'),
+    url(r'^api_doc/$', views.api_doc, name='api_doc'),
 ]

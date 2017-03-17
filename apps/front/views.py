@@ -14,6 +14,9 @@ import logging
 def index(request):
     return render(request, 'front/index.html', {})
 
+def api_doc(request):
+	return render(request, 'front/api_doc.html', {})
+
 def msg_logout(request, *args, **kwargs):
     messages.success(request, 'Вы вышли из профиля')
     return auth_views.logout(request, *args, **kwargs)
