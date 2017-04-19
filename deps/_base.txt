@@ -4,8 +4,6 @@
 # Django
 django==1.10
 
-# Postgre DB backend
-#psycopg==2-2.6.2
 
 # Bootstrap templates utils
 django-bootstrap3==7.1.0
@@ -31,7 +29,10 @@ requests==2.12.3
 # django-model-utils
 
 # PostgreSQL Database Adapter
-# psycopg2
+psycopg2==2.7.1
+
+# Postgre DB backend ?
+# psycopg==2.6.2
 
 # The missing pieces to Django CBV
 # http://django-braces.readthedocs.org/en/latest/index.html

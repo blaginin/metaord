@@ -34,7 +34,8 @@ class ProjectList(ListView):
     template_name = "chief/projects/projects.html"
 
     def get_queryset(self):
-        return super(ProjectList, self).get_queryset().filter(author=Chief.objects.all().get(user=self.request.user))
+        projects = super(ProjectList, self).get_queryset().filter(author=Chief.objects.all().get(user=self.request.user))
+        return projects
 
 @class_decorator(group_required("chief", login_url=login_url))
 class ProjectDetails(OrderList):
@@ -44,7 +45,11 @@ class ProjectDetails(OrderList):
         ctx = super().get_context_data(**kwargs)
         ctx["project"] = Project.objects.get(pk=self.kwargs["pk"])
         ctx["webms_invites"] = WebmsInvite.objects.filter(project=ctx["project"])
-        ctx["extra_fields"] = { field.name : str(field.pk) for field in OrderField.objects.filter(project=ctx["project"]) }
+        ctx["extra_fields"] = {field.name : str(field.pk) for \
+                               field in OrderField.objects.filter(project=ctx["project"])}# , is_display_on_table=True)} TODO
+        ctx["order_statuses_counts"] = [(st, descr, cl, self.get_status_counts(st, ctx["project"])) \
+                                            for (st, descr, cl) in STATUS_CHOICES_AND_CLASS]
+        ctx["orders_count"] = Order.objects.filter(project=ctx["project"]).count()
         ctx.update()
         return ctx
 
@@ -62,11 +67,9 @@ class ProjectCreate(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         proj = form.save()
-
         proj.author = Chief.objects.all().get(user=self.request.user)
         # print('PA', proj.author)
         proj.save()
-        
         create_default_order_fields(proj)
         return HttpResponseRedirect(reverse_lazy("chief:project", kwargs={"pk": proj.pk}))
 
@@ -170,6 +173,9 @@ class OrderFieldList(ListView):
     def get_queryset(self, **kwargs):
         qset = super(OrderFieldList, self).get_queryset(**kwargs)
         return qset.filter(project=self.kwargs["project_pk"])
+        # TODO:
+        # qset = super(OrderFieldList, self).get_queryset(**kwargs)
+        # return qset.filter(project=self.kwargs["project_pk"], is_display_on_table=True)
 
 @class_decorator(group_required("chief", login_url=login_url))
 class OrderFieldCreate(SuccessMessageMixin, CreateView):

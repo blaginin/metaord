@@ -7,6 +7,10 @@
         <tr>
             <th>ID</th>
             <th>Название</th>
+            <th>Всего заказов</th>
+            <th>Подтверждённых заказов</th>
+            <th>За сегодня заказов</th>
+            {% comment %}<th>Контакты</th>{% endcomment %}
         </tr>
         {% for project in object_list %}
             <tr>
@@ -23,6 +27,10 @@
                     </span>
                 </td>
                 <td>{{ project.name }}</td>
+                <td>{{ project.get_num_orders }}</td>
+                <td>{{ project.get_num_confirmed_orders }}</td>
+                <td>{{ project.get_num_orders_today }}</td>
+                {% comment %}<td>{{ project.contacts }}</td>{% endcomment %}
             </tr>
         {% endfor %}
     </table>

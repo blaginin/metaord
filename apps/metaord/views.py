@@ -31,21 +31,29 @@ def error_view(request):
     return response
 
 
-class OrderList(ExtraContext, ListView):
+class OrderList(ListView):
     model = Order
-    extra_context = {"order_statuses": STATUS_CHOICES_AND_CLASS}
 
     def get_context_data(self, **kwargs):
         context = super(OrderList, self).get_context_data(**kwargs)
+        context["order_statuses_counts"] = [(st, descr, cl, self.get_status_counts(st)) \
+                                            for (st, descr, cl) in STATUS_CHOICES_AND_CLASS]
         context["order_status"] = self.request.GET.get("order_status")
         return context
 
     def get_queryset(self):
         status = self.request.GET.get("order_status")
+        project = self.request.GET.get("project")
         if status is None:
-            return Order.objects.all()
+            return Order.objects.filter(project=project) if project \
+                   else Order.objects.all()
         else:
-            return Order.objects.filter(status=status)
+            return Order.objects.filter(status=status, project=project) if project \
+                   else Order.objects.filter(status=status)
+
+    def get_status_counts(self, status, project=None):
+        return Order.objects.filter(status=status, project=project).count() if project \
+               else Order.objects.filter(status=status).count()
 
 class OrderDetail(DetailView):
     model = Order

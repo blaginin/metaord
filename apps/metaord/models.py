@@ -12,6 +12,7 @@ class MetaordSettings(models.Model):
 
 
 # todo: inside of model
+# Do not change order of items.
 STATUS_CHOICES_AND_CLASS = [
     (0,       'Новый',            'label-default'),
     (1,       'Принят',           'label-primary'),
@@ -36,6 +37,9 @@ class Order(models.Model):
     def __str__(self):
         return 'Order #{0} from project `{1}`. Fields:{2}'.format(self.pk, self.project, self.fields)
 
+    class Meta:
+        ordering = ['-post_date']
+
 
 FIELD_TYPES_FORMFIELD = [
     (0,         "Строка",       lambda *args, **kwargs: forms.CharField(max_length=256, *args, **kwargs)),
@@ -53,6 +57,7 @@ FIELD_TYPES = list(map(lambda x: x[0:2], FIELD_TYPES_FORMFIELD))
 class OrderField(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     is_on = models.BooleanField(verbose_name="Включено", default=True)
+    # is_display_on_table = models.BooleanField(verbose_name="Отображать на странице заказов", default=True)
     name = models.CharField(max_length=256, verbose_name="Имя")
     vtype = models.IntegerField(choices=FIELD_TYPES, verbose_name="Тип")
     is_required = models.BooleanField(verbose_name="Обязательное", default=False)

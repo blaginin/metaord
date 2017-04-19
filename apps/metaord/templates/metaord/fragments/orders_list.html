@@ -1,13 +1,11 @@
 {% load urls_utils %}
 {% load html_filters %}
 
-
-
 <div class="row col-md-12">
-    {% include "metaord/fragments/statuses_tags.html" with statuses=order_statuses arg_name="order_status" %}
+    {% include "metaord/fragments/statuses_tags.html" with order_statuses_counts=order_statuses_counts arg_name="order_status" orders_count=orders_count %}
 </div>
 <div class="row col-md-12">
-    <table class="table table-striped">
+    <table class="table table-bordered table-hover">
         <tr>
             <th>ID</th>
             <th>Дата создания</th>
@@ -17,7 +15,15 @@
             {% endfor %}
         </tr>
         {% for order in orders %}
-            <tr>
+            {% if order.status == 1 %}
+                <tr class='success'>
+            {% else %}
+                {% if order.status == 2 %}
+                    <tr class='danger'>
+                {% else %}
+                    <tr>
+                {% endif %}
+            {% endif %}
                 <td>
                     {% block id %}
                     <span class="p5p">{{ order.pk }}</span>

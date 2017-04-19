@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 import uuid
 from webms.models import Webms
+
 
 class Chief(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -17,9 +19,24 @@ class Project(models.Model):
     pb_order_create = models.TextField(verbose_name="Тело post-back сообщения при создании заказа в формате JSON", blank=True)
     pb_order_upd_status = models.TextField(verbose_name="Тело post-back сообщения при обновлении статуса заказа в формате JSON", blank=True)
     pb_url = models.URLField(verbose_name="Post-back URL", blank=True)
-    
 
     author = models.ForeignKey(Chief, null=True) #models.OneToOneField(Chief, default=getdef )
+    # contacts = models.CharField(max_length=256, verbose_name="Контакты", default="") # TODO
+
+    @property
+    def get_num_orders(self):
+        from metaord.models import Order
+        return Order.objects.filter(project=self.pk).count()
+
+    @property
+    def get_num_confirmed_orders(self):
+        from metaord.models import Order, STATUS_CHOICES
+        return Order.objects.filter(project=self.pk, status=STATUS_CHOICES[1][0]).count()
+
+    @property
+    def get_num_orders_today(self):
+        from metaord.models import Order
+        return Order.objects.filter(project=self.pk, post_date__gte=datetime.date.today()).count()
 
     def __str__(self):
         return self.name
