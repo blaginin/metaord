@@ -10,7 +10,7 @@
             <th>Всего заказов</th>
             <th>Подтверждённых заказов</th>
             <th>За сегодня заказов</th>
-            {% comment %}<th>Контакты</th>{% endcomment %}
+            <th>Контакты</th>
         </tr>
         {% for project in object_list %}
             <tr>
@@ -30,7 +30,7 @@
                 <td>{{ project.get_num_orders }}</td>
                 <td>{{ project.get_num_confirmed_orders }}</td>
                 <td>{{ project.get_num_orders_today }}</td>
-                {% comment %}<td>{{ project.contacts }}</td>{% endcomment %}
+                <td>{{ project.contacts }}</td>
             </tr>
         {% endfor %}
     </table>

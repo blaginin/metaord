@@ -57,7 +57,7 @@ FIELD_TYPES = list(map(lambda x: x[0:2], FIELD_TYPES_FORMFIELD))
 class OrderField(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     is_on = models.BooleanField(verbose_name="Включено", default=True)
-    # is_display_on_table = models.BooleanField(verbose_name="Отображать на странице заказов", default=True)
+    is_display_on_table = models.BooleanField(verbose_name="Отображать на странице заказов", default=True)
     name = models.CharField(max_length=256, verbose_name="Имя")
     vtype = models.IntegerField(choices=FIELD_TYPES, verbose_name="Тип")
     is_required = models.BooleanField(verbose_name="Обязательное", default=False)

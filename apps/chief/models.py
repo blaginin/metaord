@@ -21,7 +21,7 @@ class Project(models.Model):
     pb_url = models.URLField(verbose_name="Post-back URL", blank=True)
 
     author = models.ForeignKey(Chief, null=True) #models.OneToOneField(Chief, default=getdef )
-    # contacts = models.CharField(max_length=256, verbose_name="Контакты", default="") # TODO
+    contacts = models.CharField(max_length=256, verbose_name="Контакты", default="")
 
     @property
     def get_num_orders(self):
