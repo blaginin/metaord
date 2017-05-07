@@ -34,6 +34,15 @@ class ApiOrdersTestCase(TestCase):
         })
         self.c.post("/api/order/create/", data=data_json, content_type="application/json")
 
+    # TODO
+    # def test_viewOrder(self):
+    #     data_json = json.dumps({ "api_token": str(self.invite.api_token),
+    #         "order_id": self.ceated
+    #     })
+    #     resp = self.c.post("/api/order/create/", data=data_json, content_type="application/json")
+    #     self.assertEqual(resp.status_code, 200)
+    #     resp_data = json.loads(resp.content.decode("utf-8"))
+    #     self.assertEqual(resp_data["is_success"], True)
 
     def test_orderCreated(self):
         created_ord = Order.objects.filter(fields__has_key=str(self.fields["test_FIO"].pk)).first()

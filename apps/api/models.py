@@ -1,6 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 import re
-import json 
+import json
 
 class ApiOrder():
 
@@ -17,7 +17,6 @@ class ApiOrder():
                 # print("OD", order_dict)
                 try: field_val = order_dict[str(field.pk)]
                 except KeyError: continue
-                 
                 pattern = re.compile(field.pattern)
                 if pattern.match(str(field_val)):
                     fields_dict[str(field.pk)] = field_val
@@ -48,7 +47,7 @@ class ApiResponse():
 
     @staticmethod
     def success_result(result={}):
-        resp = {"is_success": True, "result":result}
+        resp = {"is_success": True, "result": result}
         return HttpResponse(json.dumps(resp, ensure_ascii=False), content_type="application/json; encoding=utf-8")
 
 

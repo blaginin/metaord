@@ -18,10 +18,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!7uca7@dq*mj=yt+tj0mphy5uqmn*&3zn)=&vro+19v(7^wo3='
+import os
+SECRET_KEY =  '!7uca7@dq*mj=yt+tj0mphy5uqmn*&3zn)=&vro+19v(7^wo3=' # os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'kell18.pythonanywhere.com',
@@ -89,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'metaord_db',
         'USER': 'kell18',
-        'PASSWORD': 'rq3DTdr7dw', # 'g29s7qkn',
+        'PASSWORD': 'g29s7qkn', # 'rq3DTdr7dw',
         'HOST': 'localhost',
-        'PORT': '10280', # '5432',
+        'PORT': '5432', # '10280',
     },
 }
 

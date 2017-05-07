@@ -157,8 +157,12 @@ def view_order(request):
     if not is_valid_uuid(tok):
         return ApiResponse.failure("API token is incorrect.", ErrCodes.token_err)
 
+    response = None
     try:
-        response = Order.objects.all().get(pk=int(data['order_id'])).fields
+        order = Order.objects.all().get(pk=int(data['order_id']))
+        response = order.fields
+        response['status'] = order.status
+        response['is_new'] = order.is_new
     except BaseException as e:
         return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
 
@@ -180,7 +184,7 @@ def filter_order(request):
     if 'status' not in data.keys():
         return ApiResponse.failure("status not povided.", ErrCodes.arg_err)
 
-    
+
 
     tok = data[Scm.api_token]
     if not is_valid_uuid(tok):
@@ -193,12 +197,52 @@ def filter_order(request):
 
 
     ans = []
+    #try:
+    response = Order.objects.all().filter(project=invite.project, status=int(data['status']))
+    for i in response:
+        ans.append(i.pk)
+    #except BaseException as e:
+    #    return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
+    return ApiResponse.success_result(result=ans)
+
+
+@csrf_exempt
+def filter_and_get_order(request):
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except ValueError as err:
+        return ApiResponse.failure("Value error: `{0}`.".format(err), ErrCodes.format_err)
+
+    if Scm.api_token not in data:
+        return ApiResponse.failure("API token not povided.", ErrCodes.arg_err)
+
+
+    if 'status' not in data.keys():
+        return ApiResponse.failure("status not povided.", ErrCodes.arg_err)
+
+
+
+    tok = data[Scm.api_token]
+    if not is_valid_uuid(tok):
+        return ApiResponse.failure("API token is incorrect.", ErrCodes.token_err)
+
+
+    invite = WebmsInvite.objects.filter(api_token=tok).first()
+    if not invite:
+        return ApiResponse.failure("No invite matching to API token.", ErrCodes.invite_err)
+
+
+    resp = []
 
     # try:
-    response = Order.objects.all().filter(project=invite.project, status=int(data['status']))
-    for i in response: ans.append(i.pk)
+    orders = Order.objects.all().filter(project=invite.project, status=int(data['status']))
+    for i in orders:
+        order = i.fields
+        order['status'] = i.status
+        order['is_new'] = i.is_new
+        resp.append(order)
     # except BaseException as e:
     #     return ApiResponse.failure("Cant get order from DB", ErrCodes.token_err)
 
-    return ApiResponse.success_result(result=ans)
+    return ApiResponse.success_result(result=resp)
 
