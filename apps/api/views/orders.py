@@ -238,6 +238,7 @@ def filter_and_get_order(request):
     orders = Order.objects.all().filter(project=invite.project, status=int(data['status']))
     for i in orders:
         order = i.fields
+        order['id'] = i.pk
         order['status'] = i.status
         order['is_new'] = i.is_new
         resp.append(order)
